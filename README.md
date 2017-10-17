@@ -9,3 +9,6 @@ The goal is to have something that takes your Excel file and then allows you to
 Like the wizard one, this one will be Azure Functions based, it's just that then we can sideload it in Excel online (or desktop for that matter).
 
 
+	az group create --name reseauAddInGroup --location westeurope
+	az storage account create --name storageplansreseauaddin --location westeurope --resource-group reseauAddInGroup --sku Standard_LRS
+	az functionapp create --name ReseauAddIn --storage-account storageplansreseauaddin --resource-group reseauAddInGroup --consumption-plan-location westeurope
