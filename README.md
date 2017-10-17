@@ -12,3 +12,15 @@ Like the wizard one, this one will be Azure Functions based, it's just that then
 	az group create --name reseauAddInGroup --location westeurope
 	az storage account create --name storageplansreseauaddin --location westeurope --resource-group reseauAddInGroup --sku Standard_LRS
 	az functionapp create --name ReseauAddIn --storage-account storageplansreseauaddin --resource-group reseauAddInGroup --consumption-plan-location westeurope
+
+Then I had to set up Continuous Deployment (from the Azure function deployment options). No API way for that yet, apparently.
+
+
+	az storage container create --name addinstatic
+	az storage blob upload --container-name addinstatic --file clientside/index.html --name index.html --content-type "text/html"
+	az storage container set-permission --name addinstatic --public-access blob
+
+
+The Add-in entry point then is on https://storageplansreseauaddin.blob.core.windows.net/addinstatic/index.html
+
+
