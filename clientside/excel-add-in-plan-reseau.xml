@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+	   xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+	   xsi:type="TaskPaneApp">
+  <Id>324d838a-f7c6-48cc-bb90-46f5c4096c36</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>SebugCorp</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Add-In Plans Réseau" />
+  <Description DefaultValue="Cet add-in vous permet de créer des plans réseau." />
+  
+</OfficeApp>

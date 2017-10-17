@@ -1,7 +1,7 @@
 /* global fetch */
 async function getX() {
-    await fetch('index.html');
-    return 43;
+    var res = await fetch('index.html');
+    return res.text();
 }
 
 export default getX;
