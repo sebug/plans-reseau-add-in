@@ -10,5 +10,13 @@
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="Add-In Plans Réseau" />
   <Description DefaultValue="Cet add-in vous permet de créer des plans réseau." />
-  
+  <IconUrl DefaultValue="https://storageplansreseauaddin.blob.core.windows.net/addinstatic/app_icon.png" />
+  <Hosts>
+    <Host Name="Document" />
+  </Hosts>
+  <DefaultSettings>
+    <SourceLocation DefaultValue="https://storageplansreseauaddin.blob.core.windows.net/addinstatic/index.html" />
+  </DefaultSettings>
+
+  <Permissions>ReadWriteDocument</Permissions>
 </OfficeApp>
