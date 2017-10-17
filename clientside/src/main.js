@@ -1,3 +1,4 @@
-const x = 42;
+import x from "helpers.js"
+
 console.log('Hey ' + x);
 
