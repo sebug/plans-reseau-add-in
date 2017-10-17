@@ -1,4 +1,7 @@
-import x from "helpers"
+import getX from "helpers"
 
-console.log('Hey ' + x);
+getX().then(function (x) {
+    console.log('Hey ' + x);
+});
+
 

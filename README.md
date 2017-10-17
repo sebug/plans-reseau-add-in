@@ -19,7 +19,8 @@ Then I had to set up Continuous Deployment (from the Azure function deployment o
 	az storage container create --name addinstatic
 	az storage blob upload --container-name addinstatic --file clientside/index.html --name index.html --content-type "text/html"
 	az storage container set-permission --name addinstatic --public-access blob
-	az storage blob upload --container-name addinstatic --file dist.js --name dist.js --content-type "application/javascript"
+	az storage blob upload --container-name addinstatic --file clientside/dist.js --name dist.js --content-type "application/javascript"
+	az storage blob upload --container-name addinstatic --file clientside/polyfill.min.js --name polyfill.min.js --content-type "application/javascript"
 
 
 The Add-in entry point then is on https://storageplansreseauaddin.blob.core.windows.net/addinstatic/index.html

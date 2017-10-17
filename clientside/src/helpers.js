@@ -1,3 +1,7 @@
-const x = 23;
+/* global fetch */
+async function getX() {
+    await fetch('index.html');
+    return 43;
+}
 
-export default x;
+export default getX;
