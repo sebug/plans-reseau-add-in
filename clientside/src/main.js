@@ -1,4 +1,4 @@
-import x from "helpers.js"
+import x from "helpers"
 
 console.log('Hey ' + x);
 
