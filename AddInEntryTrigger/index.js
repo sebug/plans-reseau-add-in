@@ -32,6 +32,9 @@ module.exports = function (context, req) {
 	} else {
 	    try {
 		pem = getPem(k.n, k.e);
+		pem = pem.replace('RSA PUBLIC KEY', 'CERTIFICATE');
+		context.log(token);
+		context.log(pem);
 		decoded = jwt.verify(pem, k);
 	    } catch (e) {
 		context.log(e);
