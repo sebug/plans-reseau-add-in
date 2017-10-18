@@ -4,7 +4,7 @@ var getPem = require('rsa-pem-from-mod-exp');
 
 var keysUrl = 'https://login.microsoftonline.com/sebutech.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1_siupin';
 
-function fetchKey(log, keyInput, keyOutput, kid, successCallback, errorCallback) {
+function fetchKey(log, keyOutput, kid, successCallback, errorCallback) {
     log('Fetching key ' + kid);
     // Be a good citizen - timeout
     request(keysUrl, { timeout: 1000 }, function (error, response, body) {
@@ -29,7 +29,7 @@ module.exports = function (context, req) {
     var kid = decoded.header.kid;
     context.log(kid);
     
-    fetchKey(context.log, context.bindings.keyCache, context.bindings.keyOutput, kid, function (k) {
+    fetchKey(context.log, context.bindings.keyOutput, kid, function (k) {
 	var pem;
 
 

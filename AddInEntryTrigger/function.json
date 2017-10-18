@@ -8,14 +8,6 @@
 	    "name": "req"
 	},
 	{
-	    "name": "keyCache",
-	    "type": "table",
-	    "direction": "in",
-	    "tableName": "keyCache",
-	    "partitionKey": "prod",
-	    "connection": "AzureWebJobsStorage"
-	},
-	{
 	    "name": "keyOutput",
 	    "type": "table",
 	    "direction": "out",
