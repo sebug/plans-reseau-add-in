@@ -10,7 +10,7 @@ function fetchKey(log, kid, successCallback, errorCallback) {
 
     let connectionString = process.env.AzureWebJobsStorage;
 
-    let tableService = azure.createTableService(connectionString);
+    let tableService = azureStorage.createTableService(connectionString);
 
     tableService.createTableIfNotExists('keyCache', function () {
 	request(keysUrl, { timeout: 5000 }, function (error, response, body) {
