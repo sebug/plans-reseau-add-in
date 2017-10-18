@@ -16,6 +16,7 @@ function fetchKey(log, kid, successCallback, errorCallback) {
 	tableService.retrieveEntity('keyCache', 'prod', kid, function (error, result) {
 	    if (!error) {
 		log('Entry found');
+		log(JSON.stringify(result));
 		successCallback({
 		    n: result.Modulus,
 		    e: result.Exponent
