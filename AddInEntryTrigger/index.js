@@ -4,24 +4,24 @@ var getPem = require('rsa-pem-from-mod-exp');
 
 var keysUrl = 'https://login.microsoftonline.com/sebutech.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1_siupin';
 
+function fetchKeys(log, successCallback, errorCallback) {
+    // Be a good citizen - timeout
+    request(keysUrl, { timeout: 1000 }, function (error, response, body) {
+	if (error) {
+	    log(error);
+	    errorCallback(error);
+	} else {
+	    successCallback(body);
+	}
+    });
+}
+
 module.exports = function (context, req) {
     context.log('Requested Add-in entry.');
 
     var token = req.headers['x-ms-token-aad-id-token'];
 
-    // Be a good citizen - timeout
-    request(keysUrl, { timeout: 1000 }, function (error, response, body) {
-
-
-	if (error) {
-	    context.log(error);
-	    context.res = {
-		status: 500,
-		body: 'Timed out when trying to fetch keys'
-	    };
-	    context.done();
-	}
-	
+    fetchKeys(function (body) {
 	var pem;
 	var decoded = jwt.decode(token, { complete: true });
 
@@ -65,5 +65,11 @@ module.exports = function (context, req) {
 		context.done();
 	    }
 	}
+    }, function (error) {
+	context.res = {
+	    status: 500,
+	    body: 'Timed out when trying to fetch keys'
+	};
+	context.done();
     });
 };
