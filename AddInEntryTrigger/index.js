@@ -1,10 +1,11 @@
 var jwt = require('jsonwebtoken');
 var request = require('request');
 var getPem = require('rsa-pem-from-mod-exp');
+var azureStorage = require('azure-storage');
 
 var keysUrl = 'https://login.microsoftonline.com/sebutech.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1_siupin';
 
-function fetchKey(log, keyOutput, kid, successCallback, errorCallback) {
+function fetchKey(log, kid, successCallback, errorCallback) {
     log('Fetching key ' + kid);
     // Be a good citizen - timeout
     request(keysUrl, { timeout: 5000 }, function (error, response, body) {
@@ -18,18 +19,11 @@ function fetchKey(log, keyOutput, kid, successCallback, errorCallback) {
 	    })[0];
 	    if (k) {
 		log('Got a key' + k.n);
+
+		let connectionString = process.env.AzureWebJobsStorage;
+
+		log(connectionString);
 		// Store in cache for next time
-		log(typeof keyOutput.push);
-		try {
-		    keyOutput.push({
-			PartitionKey: 'prod',
-			RowKey: kid,
-			Modulus: k.n,
-			Exponent: k.e
-		    });
-		} catch (e) {
-		    log(JSON.stringify(e));
-		}
 	    }
 	    successCallback(k);
 	}
@@ -44,7 +38,7 @@ module.exports = function (context, req) {
     var kid = decoded.header.kid;
     context.log(kid);
     
-    fetchKey(context.log, context.bindings.keyOutput, kid, function (k) {
+    fetchKey(context.log, kid, function (k) {
 	var pem;
 
 
