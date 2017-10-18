@@ -10,10 +10,13 @@ module.exports = function (context, req) {
     context.log(token);
 
     request(keysUrl, function (error, response, body) {
-	context.log('Keys content');
-	context.log(body);
 
-	var decoded = jwt.decode(token);
+	var decoded = jwt.decode(token, { complete: true });
+
+	var keysObj = JSON.parse(body);
+	var k = keysObj.keys[0].n;
+
+	
 
 	context.log(JSON.stringify(decoded));
 
