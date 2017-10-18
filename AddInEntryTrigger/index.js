@@ -69,7 +69,12 @@ function getAuthorizedCourseTypes(userID, log, callback) {
 		callback([]);
 	    } else {
 		log('Successfully queried');
-		callback(result.entries);
+		callback(result.entries.map(function (r) {
+		    return {
+			UserID: r.PartitionKey._,
+			CourseType: r.RowKey._
+		    };
+		});
 	    }
 	});
     });
