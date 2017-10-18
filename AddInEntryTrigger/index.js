@@ -13,30 +13,41 @@ function fetchKey(log, kid, successCallback, errorCallback) {
     let tableService = azureStorage.createTableService(connectionString);
 
     tableService.createTableIfNotExists('keyCache', function () {
-	request(keysUrl, { timeout: 5000 }, function (error, response, body) {
-	    if (error) {
-		log(error);
-		errorCallback(error);
+	tableService.retrieveEntity('keyCache', 'prod', kid, function (error, result) {
+	    if (!error) {
+		log('Entry found');
+		successCallback({
+		    n: result.Modulus,
+		    e: result.Exponent
+		});
 	    } else {
-		var keysObj = JSON.parse(body);
-		var k = keysObj.keys.filter(function (k2) {
-		    return k2.kid == kid;
-		})[0];
-		if (k) {
-		    // Store in cache for next time
-		    let item = {
-			PartitionKey: 'prod',
-			RowKey: kid,
-			Modulus: k.n,
-			Exponent: k.e
-		    };
-		    tableService.insertOrReplaceEntity('keyCache', item, function (error2) {
-			if (error2) {
-			    log(JSON.stringify(error2));
+		log('Entry not found in cache, fetching');
+		request(keysUrl, { timeout: 5000 }, function (error, response, body) {
+		    if (error) {
+			log(error);
+			errorCallback(error);
+		    } else {
+			var keysObj = JSON.parse(body);
+			var k = keysObj.keys.filter(function (k2) {
+			    return k2.kid == kid;
+			})[0];
+			if (k) {
+			    // Store in cache for next time
+			    let item = {
+				PartitionKey: 'prod',
+				RowKey: kid,
+				Modulus: k.n,
+				Exponent: k.e
+			    };
+			    tableService.insertOrReplaceEntity('keyCache', item, function (error2) {
+				if (error2) {
+				    log(JSON.stringify(error2));
+				}
+			    });
 			}
-		    });
-		}
-		successCallback(k);
+			successCallback(k);
+		    }
+		});
 	    }
 	});
     });
