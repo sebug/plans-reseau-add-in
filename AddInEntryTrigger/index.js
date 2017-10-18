@@ -18,8 +18,8 @@ function fetchKey(log, kid, successCallback, errorCallback) {
 		log('Entry found');
 		log(JSON.stringify(result));
 		successCallback({
-		    n: result.Modulus,
-		    e: result.Exponent
+		    n: result.Modulus._,
+		    e: result.Exponent._
 		});
 	    } else {
 		log('Entry not found in cache, fetching');
