@@ -72,7 +72,7 @@ function getAuthorizedCourseTypes(userID, log, callback) {
 			UserID: r.PartitionKey._,
 			CourseType: r.RowKey._
 		    };
-		});
+		}));
 	    }
 	});
     });
