@@ -118,7 +118,7 @@ function getCoursesByAuthorizedTypes(log, authorizedCourseTypes, callback) {
 			ToDate: e.ToDate._,
 			Name: e.Name._
 		    };
-		});
+		}));
 	    }
 	    
 	});
