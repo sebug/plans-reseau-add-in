@@ -4,14 +4,19 @@ var getPem = require('rsa-pem-from-mod-exp');
 
 var keysUrl = 'https://login.microsoftonline.com/sebutech.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1_siupin';
 
-function fetchKeys(log, successCallback, errorCallback) {
+function fetchKeys(log, keyInput, keyOutput, kid, successCallback, errorCallback) {
+    log('Fetching key ' + kid);
     // Be a good citizen - timeout
     request(keysUrl, { timeout: 1000 }, function (error, response, body) {
 	if (error) {
 	    log(error);
 	    errorCallback(error);
 	} else {
-	    successCallback(body);
+	    var keysObj = JSON.parse(body);
+	    var k = keysObj.keys.filter(function (k2) {
+		return k2.kid == kid;
+	    })[0];
+	    successCallback(k);
 	}
     });
 }
@@ -20,19 +25,13 @@ module.exports = function (context, req) {
     context.log('Requested Add-in entry.');
 
     var token = req.headers['x-ms-token-aad-id-token'];
-
-    fetchKeys(context.log, function (body) {
+    var decoded = jwt.decode(token, { complete: true });
+    var kid = decoded.header.kid;
+    context.log(kid);
+    
+    fetchKey(context.log, context.bindings.keyCache, context.bindings.keyOutput, kid, function (k) {
 	var pem;
-	var decoded = jwt.decode(token, { complete: true });
 
-	var kid = decoded.header.kid;
-
-	context.log(kid);
-
-	var keysObj = JSON.parse(body);
-	var k = keysObj.keys.filter(function (k2) {
-	    return k2.kid == kid;
-	})[0];
 
 	if (!k) {
 	    context.log('Was not able to find key to validate JWT signature');
