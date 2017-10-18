@@ -4,7 +4,7 @@ var getPem = require('rsa-pem-from-mod-exp');
 
 var keysUrl = 'https://login.microsoftonline.com/sebutech.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1_siupin';
 
-function fetchKeys(log, keyInput, keyOutput, kid, successCallback, errorCallback) {
+function fetchKey(log, keyInput, keyOutput, kid, successCallback, errorCallback) {
     log('Fetching key ' + kid);
     // Be a good citizen - timeout
     request(keysUrl, { timeout: 1000 }, function (error, response, body) {
