@@ -1,9 +1,11 @@
-var jsonwebtoken = require('jsonwebtoken');
+var jwt = require('jsonwebtoken');
 
 module.exports = function (context, req) {
     context.log('Requested Add-in entry.');
 
-    context.log('Headers ' + JSON.stringify(req.headers));
+    var decoded = jwt.decode(req.headers['x-ms-token-aad-id-token']);
+
+    context.log(JSON.stringify(decoded));
 
     context.res = {
 	body: "Oh, hey world"
