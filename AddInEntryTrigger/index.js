@@ -34,10 +34,12 @@ module.exports = function (context, req) {
 		log.info(token);
 		decoded = jwt.verify(pem, k);
 	    } catch (e) {
-		context.log(JSON.stringify(e));
+		context.log('Caught');
+		context.log(typeof e);
+		decoded = null;
 		context.res = {
 		    status: 500,
-		    body: JSON.stringify(e)
+		    body: e
 		};
 		context.done();
 	    }
