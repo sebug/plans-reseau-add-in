@@ -19,12 +19,16 @@ function fetchKey(log, keyOutput, kid, successCallback, errorCallback) {
 	    if (k) {
 		log('Got a key' + k.n);
 		// Store in cache for next time
-		keyOutput.push({
-		    PartitionKey: 'prod',
-		    RowKey: kid,
-		    Modulus: k.n,
-		    Exponent: k.e
-		});
+		try {
+		    keyOutput.push({
+			PartitionKey: 'prod',
+			RowKey: kid,
+			Modulus: k.n,
+			Exponent: k.e
+		    });
+		} catch (e) {
+		    log(JSON.stringify(e));
+		}
 	    }
 	    successCallback(k);
 	}
