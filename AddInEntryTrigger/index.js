@@ -69,7 +69,7 @@ function getAuthorizedCourseTypes(userID, log, callback) {
 		callback([]);
 	    } else {
 		log('Successfully queried');
-		callback([]);
+		callback(result.entries);
 	    }
 	});
     });
