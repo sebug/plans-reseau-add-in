@@ -35,7 +35,7 @@ module.exports = function (context, req) {
 		decoded = jwt.verify(pem, k);
 	    } catch (e) {
 		context.log('Caught');
-		context.log(typeof e);
+		context.log(Object.keys(e));
 		decoded = null;
 		context.res = {
 		    status: 500,
