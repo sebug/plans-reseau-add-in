@@ -19,6 +19,7 @@ function fetchKey(log, keyOutput, kid, successCallback, errorCallback) {
 	    if (k) {
 		log('Got a key' + k.n);
 		// Store in cache for next time
+		log(typeof keyOutput.push);
 		try {
 		    keyOutput.push({
 			PartitionKey: 'prod',
