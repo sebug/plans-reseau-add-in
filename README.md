@@ -22,8 +22,20 @@ Then I had to set up Continuous Deployment (from the Azure function deployment o
 	az storage blob upload --container-name addinstatic --file clientside/dist.js --name dist.js --content-type "application/javascript"
 	az storage blob upload --container-name addinstatic --file clientside/polyfill.min.js --name polyfill.min.js --content-type "application/javascript"
 	az storage blob upload --container-name addinstatic --file clientside/app_icon.png --name app_icon.png --content-type "image/png"
+	az storage blob upload --container-name addinstatic --file clientside/Jquery.Dropdown.js --name Jquery.Dropdown.js --content-type "application/javascript"
 
 
 The Add-in entry point then is on https://storageplansreseauaddin.blob.core.windows.net/addinstatic/index.html
+
+
+As for login, here are the steps I took to get that working (modeled by https://blogs.msdn.microsoft.com/hmahrt/2017/03/07/azure-active-directory-b2c-and-azure-functions/ ):
+
+- The function base path is https://reseauaddin.azurewebsites.net
+
+Connect to Azure B2C (separate account in my case).
+
+Add an application.
+
+
 
 

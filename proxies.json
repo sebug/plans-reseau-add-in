@@ -1,0 +1,13 @@
+{
+    "proxies": {
+	"proxyName": {
+	    "matchCondition": {
+		"methods": [
+		    "GET"
+		],
+		"route": "/"
+	    },
+	    "backendUri": "https://storageplansreseauaddin.blob.core.windows.net/addinstatic/index.html"
+	}
+    }
+}
