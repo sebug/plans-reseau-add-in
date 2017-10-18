@@ -14,7 +14,6 @@ function fetchKey(log, kid, successCallback, errorCallback) {
 	tableService.retrieveEntity('keyCache', 'prod', kid, function (error, result) {
 	    if (!error) {
 		log('Entry found');
-		log(JSON.stringify(result));
 		successCallback({
 		    n: result.Modulus._,
 		    e: result.Exponent._
@@ -78,6 +77,46 @@ function getAuthorizedCourseTypes(userID, log, callback) {
     });
 }
 
+function getCoursesByAuthorizedTypes(log, authorizedCourseTypes, callback) {
+
+    if (authorizedCourseTypes.length <= 0) {
+	callback([]);
+    }
+    
+    let connectionString = process.env.AzureWebJobsStorage;
+
+    let tableService = azureStorage.createTableService(connectionString);
+    tableService.createTableIfNotExists('course', function () {
+	var baseQuery = new azureStorage.TableQuery()
+	    .top(100);
+	var query = baseQuery;
+	var hasAny = authorizedCourseTypes.filter(function (ct) {
+	    return ct.CourseType === 'Any';
+	}).length > 0;
+
+	var i;
+	var queryString = '';
+	if (!hasAny) {
+	    for (i = 0; i < authorizedCourseTypes.length; i += 1) {
+		queryString += 'PartitionKey eq \'' + authorizedCourseTypes[i] + '\'';
+		if (i < authorizedCourseTypes.length - 1) {
+		    queryString += ' OR ';
+		}
+	    }
+	    query = query.where(queryString);
+	}
+	tableService.queryEntities('course', query, null, function (error, result, response) {
+	    if (error) {
+		log(JSON.stringify(error));
+		callback([]);
+	    } else {
+		callback(result.entries);
+	    }
+	    
+	});
+    });
+}
+
 
 module.exports = function (context, req) {
     context.log('Requested Add-in entry.');
@@ -113,10 +152,12 @@ module.exports = function (context, req) {
 	    }
 	    if (decoded) {
 		getAuthorizedCourseTypes(decoded.sub, context.log, function (authorizedCourseTypes) {
-		    context.res = {
-			body: authorizedCourseTypes
-		    };
-		    context.done();
+		    getCoursesByAuthorizedTypes(context.log, authorizedCourseTypes, function (courses) {
+			context.res = {
+			    body: courses
+			};
+			context.done();
+		    });
 		});
 	    }
 	}
