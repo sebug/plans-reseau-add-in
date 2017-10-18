@@ -35,13 +35,16 @@ module.exports = function (context, req) {
 		    status: 500,
 		    body: JSON.stringify(e)
 		};
+		context.done();
 	    }
-	    context.log(JSON.stringify(decoded));
+	    if (decoded) {
+		context.log(JSON.stringify(decoded));
 
-	    context.res = {
-		body: "Oh, hey world"
-	    };
-	    context.done();
+		context.res = {
+		    body: "Oh, hey world"
+		};
+		context.done();
+	    }
 	}
     });
 };
