@@ -2,6 +2,7 @@
   "dependencies": {
       "jsonwebtoken": "^8.1.0",
       "request": "^2.83.0",
-      "rsa-pem-from-mod-exp": "^0.8.4"
+      "rsa-pem-from-mod-exp": "^0.8.4",
+      "azure-storage": "^2.6.0"
   }
 }
