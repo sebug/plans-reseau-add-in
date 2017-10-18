@@ -68,7 +68,7 @@ module.exports = function (context, req) {
     }, function (error) {
 	context.res = {
 	    status: 500,
-	    body: 'Timed out when trying to fetch keys'
+	    body: 'Timed out when trying to fetch keys' + JSON.stringify(error)
 	};
 	context.done();
     });
