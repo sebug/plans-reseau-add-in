@@ -54,6 +54,26 @@ function fetchKey(log, kid, successCallback, errorCallback) {
     });
 }
 
+function getAuthorizedCourseTypes(userID, log, callback) {
+    log('Getting authorized course types for ' + userID);
+    let connectionString = process.env.AzureWebJobsStorage;
+
+    let tableService = azureStorage.createTableService(connectionString);
+    tableService.createTableIfNotExists('authorizedCourses', function () {
+	var query = new azureStorage.TableQuery()
+	    .top(100)
+	    .where('PartitionKey eq ?',userID);
+	tableService.queryEntities('authorizedCourses', query, null, function (error, result, response) {
+	    if (error) {
+		log(JSON.stringify(error));
+		callback([]);
+	    } else {
+		log('Successfully queried');
+		callback([]);
+	    }
+	});
+    });
+}
 
 
 module.exports = function (context, req) {
@@ -89,11 +109,12 @@ module.exports = function (context, req) {
 		context.done();
 	    }
 	    if (decoded) {
-		context.log(JSON.stringify(decoded));
-		context.res = {
-		    body: "Oh, hey world"
-		};
-		context.done();
+		getAuthorizedCourseTypes(decoded.sub, context.log, function (authorizedCourseTypes) {
+		    context.res = {
+			body: authorizedCourseTypes
+		    };
+		    context.done();
+		});
 	    }
 	}
     }, function (error) {
