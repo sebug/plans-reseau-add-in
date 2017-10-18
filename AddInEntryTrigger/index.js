@@ -29,6 +29,8 @@ module.exports = function (context, req) {
 	    context.done();
 	} else {
 	    try {
+		log.info(k.n);
+		log.info(k.e);
 		pem = getPem(k.n, k.e);
 		log.info(pem);
 		log.info(token);
