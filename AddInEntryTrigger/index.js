@@ -110,7 +110,13 @@ function getCoursesByAuthorizedTypes(log, authorizedCourseTypes, callback) {
 		log(JSON.stringify(error));
 		callback([]);
 	    } else {
-		callback(result.entries);
+		callback(result.entries.map(e => {
+		    CourseType: e.PartitionKey._,
+		    Number: e.RowKey._,
+		    FromDate: e.FromDate._,
+		    ToDate: e.ToDate._,
+		    Name: e.Name._
+		});
 	    }
 	    
 	});
