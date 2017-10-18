@@ -9,11 +9,17 @@ module.exports = function (context, req) {
 
     var token = req.headers['x-ms-token-aad-id-token'];
 
-    request(keysUrl, function (error, response, body) {
+    // Be a good citizen - timeout
+    request(keysUrl, { timeout: 1000 }, function (error, response, body) {
 
 
 	if (error) {
 	    context.log(error);
+	    context.res = {
+		status: 500,
+		body: 'Timed out when trying to fetch keys'
+	    };
+	    context.done();
 	}
 	
 	var pem;
