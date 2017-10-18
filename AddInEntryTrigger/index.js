@@ -10,6 +10,12 @@ module.exports = function (context, req) {
     var token = req.headers['x-ms-token-aad-id-token'];
 
     request(keysUrl, function (error, response, body) {
+
+
+	if (error) {
+	    context.log(error);
+	}
+	
 	var pem;
 	var decoded = jwt.decode(token, { complete: true });
 
