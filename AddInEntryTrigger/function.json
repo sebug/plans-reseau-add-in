@@ -16,6 +16,14 @@
 	    "connection": "AzureWebJobsStorage"
 	},
 	{
+	    "name": "keyOutput",
+	    "type": "table",
+	    "direction": "out",
+	    "tableName": "keyCache",
+	    "partitionKey": "prod",
+	    "connection": "AzureWebJobsStorage"
+	},
+	{
 	    "type": "http",
 	    "direction": "out",
 	    "name": "res"
