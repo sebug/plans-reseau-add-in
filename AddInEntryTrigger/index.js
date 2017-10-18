@@ -1,5 +1,6 @@
 var jwt = require('jsonwebtoken');
 var request = require('request');
+var getPem = require('rsa-pem-from-mod-exp');
 
 var keysUrl = 'https://login.microsoftonline.com/sebutech.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1_siupin';
 
@@ -9,7 +10,7 @@ module.exports = function (context, req) {
     var token = req.headers['x-ms-token-aad-id-token'];
 
     request(keysUrl, function (error, response, body) {
-
+	var pem;
 	var decoded = jwt.decode(token, { complete: true });
 
 	var kid = decoded.header.kid;
@@ -28,7 +29,10 @@ module.exports = function (context, req) {
 	    context.done();
 	} else {
 	    try {
-		decoded = jwt.verify(token, k);
+		pem = getPem(k.n, k.e);
+		log.info(pem);
+		log.info(token);
+		decoded = jwt.verify(pem, k);
 	    } catch (e) {
 		context.log(JSON.stringify(e));
 		context.res = {
