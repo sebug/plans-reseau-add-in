@@ -44,8 +44,6 @@ module.exports = function (context, req) {
 	} else {
 	    try {
 		pem = getPem(k.n, k.e);
-		context.log(token);
-		context.log(pem);
 		decoded = jwt.verify(token, pem);
 	    } catch (e) {
 		context.log(e);
@@ -57,8 +55,6 @@ module.exports = function (context, req) {
 		context.done();
 	    }
 	    if (decoded) {
-		context.log(JSON.stringify(decoded));
-
 		context.res = {
 		    body: "Oh, hey world"
 		};
