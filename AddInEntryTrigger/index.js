@@ -6,8 +6,6 @@ var azureStorage = require('azure-storage');
 var keysUrl = 'https://login.microsoftonline.com/sebutech.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1_siupin';
 
 function fetchKey(log, kid, successCallback, errorCallback) {
-    log('Fetching key ' + kid);
-
     let connectionString = process.env.AzureWebJobsStorage;
 
     let tableService = azureStorage.createTableService(connectionString);
