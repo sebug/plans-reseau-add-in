@@ -1,3 +1,5 @@
+var jsonwebtoken = require('jsonwebtoken');
+
 module.exports = function (context, req) {
     context.log('Requested Add-in entry.');
 
