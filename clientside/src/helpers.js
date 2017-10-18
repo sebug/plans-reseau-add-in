@@ -1,6 +1,8 @@
 /* global fetch */
 async function getX() {
-    var res = await fetch('index.html');
+    var res = await fetch('/api/AddInEntryTrigger', {
+	credentials: 'include'
+    });
     return res.text();
 }
 
