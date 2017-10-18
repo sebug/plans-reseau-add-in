@@ -19,7 +19,7 @@ module.exports = function (context, req) {
 
 	var keysObj = JSON.parse(body);
 	var k = keysObj.keys.filter(function (k2) {
-	    k2.kid == kid;
+	    return k2.kid == kid;
 	})[0];
 
 	if (!k) {
