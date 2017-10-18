@@ -54,6 +54,8 @@ function fetchKey(log, kid, successCallback, errorCallback) {
     });
 }
 
+
+
 module.exports = function (context, req) {
     context.log('Requested Add-in entry.');
 
@@ -87,6 +89,7 @@ module.exports = function (context, req) {
 		context.done();
 	    }
 	    if (decoded) {
+		context.log(JSON.stringify(decoded));
 		context.res = {
 		    body: "Oh, hey world"
 		};
