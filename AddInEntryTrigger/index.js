@@ -7,26 +7,38 @@ var keysUrl = 'https://login.microsoftonline.com/sebutech.onmicrosoft.com/discov
 
 function fetchKey(log, kid, successCallback, errorCallback) {
     log('Fetching key ' + kid);
-    // Be a good citizen - timeout
-    request(keysUrl, { timeout: 5000 }, function (error, response, body) {
-	if (error) {
-	    log(error);
-	    errorCallback(error);
-	} else {
-	    var keysObj = JSON.parse(body);
-	    var k = keysObj.keys.filter(function (k2) {
-		return k2.kid == kid;
-	    })[0];
-	    if (k) {
-		log('Got a key' + k.n);
 
-		let connectionString = process.env.AzureWebJobsStorage;
+    let connectionString = process.env.AzureWebJobsStorage;
 
-		log(connectionString);
-		// Store in cache for next time
+    let tableService = azure.createTableService(connectionString);
+
+    tableService.createTableIfNotExists('keyCache', function () {
+	request(keysUrl, { timeout: 5000 }, function (error, response, body) {
+	    if (error) {
+		log(error);
+		errorCallback(error);
+	    } else {
+		var keysObj = JSON.parse(body);
+		var k = keysObj.keys.filter(function (k2) {
+		    return k2.kid == kid;
+		})[0];
+		if (k) {
+		    // Store in cache for next time
+		    let item = {
+			PartitionKey: 'prod',
+			RowKey: kid,
+			Modulus: k.n,
+			Exponent: k.e
+		    };
+		    tableService.insertOrReplaceEntity('keyCache', item, function (error2) {
+			if (error2) {
+			    log(JSON.stringify(error2));
+			}
+		    });
+		}
+		successCallback(k);
 	    }
-	    successCallback(k);
-	}
+	});
     });
 }
 
