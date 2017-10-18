@@ -28,7 +28,7 @@ module.exports = function (context, req) {
 	    context.done();
 	} else {
 	    try {
-		decoded = jwt.verify(token, k.n);
+		decoded = jwt.verify(token, k);
 	    } catch (e) {
 		context.log(JSON.stringify(e));
 		context.res = {
