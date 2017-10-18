@@ -31,15 +31,10 @@ module.exports = function (context, req) {
 	    context.done();
 	} else {
 	    try {
-		context.log(k.n);
-		context.log(k.e);
 		pem = getPem(k.n, k.e);
-		context.log(pem);
-		context.log(token);
 		decoded = jwt.verify(pem, k);
 	    } catch (e) {
-		context.log('Caught');
-		context.log(Object.keys(e));
+		context.log(e);
 		decoded = null;
 		context.res = {
 		    status: 500,
