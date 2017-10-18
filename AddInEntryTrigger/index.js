@@ -21,7 +21,7 @@ module.exports = function (context, req) {
 
     var token = req.headers['x-ms-token-aad-id-token'];
 
-    fetchKeys(function (body) {
+    fetchKeys(context.log, function (body) {
 	var pem;
 	var decoded = jwt.decode(token, { complete: true });
 
