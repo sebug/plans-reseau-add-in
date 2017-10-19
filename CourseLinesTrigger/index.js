@@ -89,7 +89,7 @@ function getCourseLines(log, number, callback) {
 	    .top(100)
 	    .where('PartitionKey eq ?', number);
 	tableService.queryEntities('courseLines', query, null, function (error, result, response) {
-	    console.log(JSON.stringify(result));
+	    log(JSON.stringify(result));
 	    callback([]);
 	});
     });
