@@ -56,6 +56,8 @@ function getCourseByNumber(log, authorizedCourseTypes, number, callback) {
 	    }
 	    queryString += ')';
 	}
+
+	log(queryString);
 	query = query.where(queryString, number);
 	tableService.queryEntities('course', query, null, function (error, result, response) {
 	    if (error) {
@@ -79,13 +81,13 @@ function getCourseByNumber(log, authorizedCourseTypes, number, callback) {
 
 
 module.exports = function (context, req) {
-    context.log('Requested course lines entry ' + JSON.stringify(req.headers));
+    context.log('Requested course lines entry ' + req.query.number);
 
     var token = req.headers['x-ms-token-aad-id-token'];
     var decoded = jwt.decode(token);
     
     getAuthorizedCourseTypes(decoded.sub, context.log, function (authorizedCourseTypes) {
-	getCourseByNumber(context.log, authorizedCourseTypes, '1234', function (courses) {
+	getCourseByNumber(context.log, authorizedCourseTypes, req.query.number, function (courses) {
 	    context.res = {
 		body: courses
 	    };
