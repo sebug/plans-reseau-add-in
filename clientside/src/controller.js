@@ -1,13 +1,15 @@
-/* global $ */
+/* global $, Excel */
 import helpers from "helpers";
 import dropDownHelper from "dropDownHelper";
+
+async function enterLines(lines) {
+}
 
 async function chooseCourse() {
     const courseID = $('.cours-dropdown input[name="cours"]').val();
     console.log('Get course number load lines' + courseID);
     let lines = await helpers.getCourseLines(courseID);
-    console.log('Fetched lines');
-    console.log(lines);
+    enterLines(lines);
 }
 
 async function init(reason) {
