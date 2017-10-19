@@ -89,8 +89,14 @@ function getCourseLines(log, number, callback) {
 	    .top(100)
 	    .where('PartitionKey eq ?', number);
 	tableService.queryEntities('courseLines', query, null, function (error, result, response) {
-	    log(JSON.stringify(result));
-	    callback([]);
+	    callback(result.entries.map(function (l) {
+		return {
+		    Number: l.PartitionKey && l.PartitionKey._,
+		    Identifier: l.RowKey && l.RowKey._,
+		    Name: l.Name && l.Name._,
+		    Function: l.Function && l.Function._
+		};
+	    }));
 	});
     });
 }
