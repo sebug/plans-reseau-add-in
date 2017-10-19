@@ -130,50 +130,14 @@ module.exports = function (context, req) {
     context.log('Requested Add-in entry.');
 
     var token = req.headers['x-ms-token-aad-id-token'];
-    var decoded = jwt.decode(token, { complete: true });
-    var kid = decoded.header.kid;
-    context.log(kid);
-    
-    fetchKey(context.log, kid, function (k) {
-	var pem;
+    var decoded = jwt.decode(token);
 
-
-	if (!k) {
-	    context.log('Was not able to find key to validate JWT signature');
+    getAuthorizedCourseTypes(decoded.sub, context.log, function (authorizedCourseTypes) {
+	getCoursesByAuthorizedTypes(context.log, authorizedCourseTypes, function (courses) {
 	    context.res = {
-		status: 500,
-		body: 'Was not able to find key to validate JWT signature'
+		body: courses
 	    };
 	    context.done();
-	} else {
-	    try {
-		pem = getPem(k.n, k.e);
-		decoded = jwt.verify(token, pem);
-	    } catch (e) {
-		context.log(e);
-		decoded = null;
-		context.res = {
-		    status: 500,
-		    body: e
-		};
-		context.done();
-	    }
-	    if (decoded) {
-		getAuthorizedCourseTypes(decoded.sub, context.log, function (authorizedCourseTypes) {
-		    getCoursesByAuthorizedTypes(context.log, authorizedCourseTypes, function (courses) {
-			context.res = {
-			    body: courses
-			};
-			context.done();
-		    });
-		});
-	    }
-	}
-    }, function (error) {
-	context.res = {
-	    status: 500,
-	    body: 'Timed out when trying to fetch keys' + JSON.stringify(error)
-	};
-	context.done();
+	});
     });
 };
