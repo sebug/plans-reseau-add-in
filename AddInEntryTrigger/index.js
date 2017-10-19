@@ -128,6 +128,7 @@ function getCoursesByAuthorizedTypes(log, authorizedCourseTypes, callback) {
 
 module.exports = function (context, req) {
     context.log('Requested Add-in entry.');
+    context.log(JSON.stringify(req.headers));
 
     var token = req.headers['x-ms-token-aad-id-token'];
     var decoded = jwt.decode(token);

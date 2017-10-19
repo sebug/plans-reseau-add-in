@@ -1,9 +1,10 @@
 /* global $, Office */
 import controller from "controller";
 
-Office.initialize = function (reason) {
+window.InitializeOnceReady = function (reason) {
     controller.init(reason);
 };
+
 
 
 

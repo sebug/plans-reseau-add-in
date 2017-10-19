@@ -1,8 +1,12 @@
-/* global $, Excel */
+/* global $, Office, Excel */
 import helpers from "helpers";
 import dropDownHelper from "dropDownHelper";
 
 async function enterLines(lines) {
+    await Excel.run(function (context) {
+	console.log(context.workbook);
+    });
+    console.log(Office.context);
 }
 
 async function chooseCourse() {
