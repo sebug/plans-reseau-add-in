@@ -1,9 +1,9 @@
 /* global fetch */
-async function getX() {
+async function getCourses() {
     var res = await fetch('/api/AddInEntryTrigger', {
 	credentials: 'include'
     });
-    return res.text();
+    return res.json();
 }
 
-export default getX;
+export default getCourses;

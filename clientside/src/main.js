@@ -1,19 +1,20 @@
-/* global ko, $ */
-import getX from "helpers";
+/* global $, Office */
+import getCourses from "helpers";
 
-getX().then(function (x) {
-    console.log('x is ' + x);
-    $(document).ready(function () {
-	$('.button.login').click(function () {
-	    var userName = $('#username').val();
-	    var password = $('#password').val();
-	    console.log({
-		userName: userName,
-		password: password
-	    });
-	    return false;
-	});
+Office.initialize = function (reason) {
+    console.log(reason);
+    $('.ui.dropdown').dropdown();
+
+    getCourses().then(function (courses) {
+	if (courses && courses.length) {
+	    for (let course of courses) {
+		var title = course.CourseType + ' - ' + course.Name;
+		$('.cours-dropdown .menu').append('<div class="item" data-value="' + course.Number + '">' + title + '<div>');
+	    }
+	}
     });
-});
+};
+
+
 
 

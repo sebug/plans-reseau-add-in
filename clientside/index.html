@@ -28,17 +28,21 @@
   </head>
   <body>
     <div class="main-content">
-      <p>Veuillez vous loguer pour avoir accès aux listes des utilisateurs type.</p>
       <form class="ui form">
 	<div class="field">
-	  <label>Nom d'utilisateur</label>
-	  <input type="text" name="username" id="username" />
+	  <label>Choisissez un cours pour reprendre les fonctions radio</label>
+	  <div class="ui selection dropdown cours-dropdown">
+	    <input type="hidden" name="cours" />
+	    <div class="text">Cours</div>
+	    <i class="dropdown icon"></i>
+	    <div class="menu">
+	      <div class="item" data-value="empty">
+		Cours vide
+	      </div>
+	    </div>
+	  </div>
 	</div>
-	<div class="field">
-	  <label>Mot de passe</label>
-	  <input type="password" name="password" id="password" />
-	</div>
-	<button class="ui blue button login">Se loguer</button>
+	<button class="ui blue button login">Choisir</button>
       </form>
     </div>
   </body>

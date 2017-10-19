@@ -12,7 +12,7 @@
   <Description DefaultValue="Cet add-in vous permet de créer des plans réseau." />
   <IconUrl DefaultValue="https://storageplansreseauaddin.blob.core.windows.net/addinstatic/app_icon.png" />
   <Hosts>
-    <Host Name="Document" />
+    <Host Name="Workbook" />
   </Hosts>
   <DefaultSettings>
     <SourceLocation DefaultValue="https://reseauaddin.azurewebsites.net" />
