@@ -3,16 +3,23 @@ import helpers from "helpers";
 import dropDownHelper from "dropDownHelper";
 
 async function enterLines(lines) {
-    await Excel.run(function (context) {
-	const tables = context.workbook.tables;
-	const table = tables.getItem(0);
-	const rows = table.rows;
-	rows.load('items');
-	return context.sync().then(function () {
-	    console.log('row count: ' + rows.count);
-	});
+    await Excel.run(async function (context) {
+	const sheet = context.workbook.worksheets.getFirst();
+	sheet.activate();
+	sheet.load('name');
+	await context.sync();
+	console.log(`The active worksheet is "${sheet.name}"`);
+
+	const table = sheet.tables.getItemAt(0);
+
+	table.load('name');
+
+	await context.sync();
+
+	console.log(table.name);
+
+	return true;
     });
-    console.log(Office.context);
 }
 
 async function chooseCourse() {
