@@ -64,7 +64,6 @@ function getCourseByNumber(log, authorizedCourseTypes, number, callback) {
 		log(JSON.stringify(error));
 		callback(null);
 	    } else {
-		log(JSON.stringify(result));
 		callback(result.entries.map(function (e) {
 		    return {
 			CourseType: e.PartitionKey._,
@@ -80,6 +79,22 @@ function getCourseByNumber(log, authorizedCourseTypes, number, callback) {
     });
 }
 
+function getCourseLines(log, number, callback) {
+    let connectionString = process.env.AzureWebJobsStorage;
+
+    let tableService = azureStorage.createTableService(connectionString);
+
+    tableService.createTableIfNotExists('courseLines', function () {
+	var query = new azureStorage.TableQuery()
+	    .top(100)
+	    .where('PartitionKey eq ?', number);
+	tableService.queryEntities('courseLines', query, null, function (error, result, response) {
+	    console.log(JSON.stringify(result));
+	    callback([]);
+	});
+    });
+}
+
 
 module.exports = function (context, req) {
     context.log('Requested course lines entry ' + req.query.number);
@@ -88,11 +103,21 @@ module.exports = function (context, req) {
     var decoded = jwt.decode(token);
     
     getAuthorizedCourseTypes(decoded.sub, context.log, function (authorizedCourseTypes) {
-	getCourseByNumber(context.log, authorizedCourseTypes, req.query.number, function (courses) {
-	    context.res = {
-		body: courses
-	    };
-	    context.done();
+	getCourseByNumber(context.log, authorizedCourseTypes, req.query.number, function (course) {
+	    if (course) {
+		getCourseLines(context.log, course.Number, function (lines) {
+		    context.res = {
+			body: lines
+		    };
+		    context.done();
+		});
+	    } else {
+		context.log('Did not find course (can happen when for example we are not authorized)');
+		context.res = {
+		    body: []
+		};
+		context.done();
+	    }
 	});
     });
 };
