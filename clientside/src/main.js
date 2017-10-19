@@ -1,14 +1,8 @@
 /* global $, Office */
-import getCourses from "helpers";
-import dropDownHelper from "dropDownHelper";
+import controller from "controller";
 
 Office.initialize = function (reason) {
-    console.log(reason);
-    $('.ui.dropdown').dropdown();
-
-    getCourses().then(function (courses) {
-	return dropDownHelper.populateCourseDropDown(courses);
-    });
+    controller.init(reason);
 };
 
 
