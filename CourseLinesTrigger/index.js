@@ -64,6 +64,7 @@ function getCourseByNumber(log, authorizedCourseTypes, number, callback) {
 		log(JSON.stringify(error));
 		callback(null);
 	    } else {
+		log(JSON.stringify(result));
 		callback(result.entries.map(function (e) {
 		    return {
 			CourseType: e.PartitionKey._,
