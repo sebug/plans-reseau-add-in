@@ -1,15 +1,18 @@
 /* global $ */
-import getCourses from "helpers";
+import helpers from "helpers";
 import dropDownHelper from "dropDownHelper";
 
 async function chooseCourse() {
     const courseID = $('.cours-dropdown input[name="cours"]').val();
     console.log('Get course number load lines' + courseID);
+    let lines = await helpers.getCourseLines(courseID);
+    console.log('Fetched lines');
+    console.log(lines);
 }
 
 async function init(reason) {
     console.log('Controller init' + reason);
-    let courses = await getCourses();
+    let courses = await helpers.getCourses();
     await dropDownHelper.populateCourseDropDown(courses);
     console.log('Controller before UI');
     $('.ui.dropdown').dropdown();

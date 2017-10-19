@@ -6,4 +6,14 @@ async function getCourses() {
     return res.json();
 }
 
-export default getCourses;
+async function getCourseLines(number) {
+    var res = await fetch('/api/CourseLinesTrigger?number=' + number, {
+	credentials: 'include'
+    });
+    return res.json();
+}
+
+export default {
+    getCourses: getCourses,
+    getCourseLines: getCourseLines
+};
