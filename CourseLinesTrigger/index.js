@@ -1,5 +1,4 @@
 var jwt = require('jsonwebtoken');
-var request = require('request');
 var azureStorage = require('azure-storage');
 
 function getAuthorizedCourseTypes(userID, log, callback) {
@@ -38,6 +37,8 @@ function getCourseByNumber(log, authorizedCourseTypes, number, callback) {
 
     let tableService = azureStorage.createTableService(connectionString);
     tableService.createTableIfNotExists('course', function () {
+	var baseQuery = new azureStorage.TableQuery()
+	    .top(100);
 	var query = baseQuery;
 	var hasAny = authorizedCourseTypes.filter(function (ct) {
 	    return ct.CourseType === 'Any';
@@ -84,11 +85,11 @@ module.exports = function (context, req) {
     var decoded = jwt.decode(token);
     
     getAuthorizedCourseTypes(decoded.sub, context.log, function (authorizedCourseTypes) {
-		    getCourseByNumber(context.log, authorizedCourseTypes, '1234', function (courses) {
-			context.res = {
-			    body: courses
-			};
-			context.done();
-		    });
+	getCourseByNumber(context.log, authorizedCourseTypes, '1234', function (courses) {
+	    context.res = {
+		body: courses
+	    };
+	    context.done();
+	});
     });
 };
