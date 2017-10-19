@@ -4,7 +4,13 @@ import dropDownHelper from "dropDownHelper";
 
 async function enterLines(lines) {
     await Excel.run(function (context) {
-	console.log(context.workbook);
+	const tables = context.workbook.tables;
+	const table = tables.getItem(0);
+	const rows = table.rows;
+	rows.load('items');
+	return context.sync().then(function () {
+	    console.log('row count: ' + rows.count);
+	});
     });
     console.log(Office.context);
 }

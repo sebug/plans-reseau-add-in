@@ -11,6 +11,20 @@
       // Ensure that we can already be functional even if require hasn't required
       // our app yet
       Office.initialize = function (reason) {
+      $(document).ready(function () {
+      $('head').append('<sc' +
+			     'ript src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"></sc' +
+														      'ript>');
+      setTimeout(function () {
+      $('head').append('<script>require.config({' +
+      'paths: {' +
+      '"main": "static/dist"' +
+      '}' +
+      '});' +
+	'require(["main"]);' +
+	'</sc' +
+	       'ript>');
+}, 4000);
       function spinWaitInitialize() {
       if (window.InitializeOnceReady) {
         window.InitializeOnceReady(reason);
@@ -20,10 +34,10 @@
       }
       }
       spinWaitInitialize();
+      });
       };
     </script>
     <script src="static/Jquery.Dropdown.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"></script>
     <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/1.0/fabric.min.css">
     <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/1.0/fabric.components.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.2.13/dist/semantic.min.css">
@@ -34,12 +48,6 @@
       }
     </style>
     <script>
-      require.config({
-      paths: {
-      "main": "static/dist"
-      }
-      });
-      require(["main"]);
     </script>
   </head>
   <body>
