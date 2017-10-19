@@ -1,4 +1,3 @@
-var jwt = require('jsonwebtoken');
 var azureStorage = require('azure-storage');
 
 function getAuthorizedCourseTypes(userID, log, callback) {
@@ -105,10 +104,9 @@ function getCourseLines(log, number, callback) {
 module.exports = function (context, req) {
     context.log('Requested course lines entry ' + req.query.number);
 
-    var token = req.headers['x-ms-token-aad-id-token'];
-    var decoded = jwt.decode(token);
+    var userID = req.headers['x-ms-client-principal-id'];
     
-    getAuthorizedCourseTypes(decoded.sub, context.log, function (authorizedCourseTypes) {
+    getAuthorizedCourseTypes(userID, context.log, function (authorizedCourseTypes) {
 	getCourseByNumber(context.log, authorizedCourseTypes, req.query.number, function (course) {
 	    if (course) {
 		getCourseLines(context.log, course.Number, function (lines) {

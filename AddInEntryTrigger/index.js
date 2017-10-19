@@ -130,10 +130,9 @@ module.exports = function (context, req) {
     context.log('Requested Add-in entry.');
     context.log(JSON.stringify(req.headers));
 
-    var token = req.headers['x-ms-token-aad-id-token'];
-    var decoded = jwt.decode(token);
+    var userID = req.headers['x-ms-client-principal-id'];
 
-    getAuthorizedCourseTypes(decoded.sub, context.log, function (authorizedCourseTypes) {
+    getAuthorizedCourseTypes(userID, context.log, function (authorizedCourseTypes) {
 	getCoursesByAuthorizedTypes(context.log, authorizedCourseTypes, function (courses) {
 	    context.res = {
 		body: courses
