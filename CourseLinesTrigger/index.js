@@ -127,7 +127,7 @@ function getCourseByNumber(log, authorizedCourseTypes, number, callback) {
 
 
 module.exports = function (context, req) {
-    context.log('Requested Add-in entry.');
+    context.log('Requested course lines entry ' + JSON.stringify(req.headers));
 
     var token = req.headers['x-ms-token-aad-id-token'];
     var decoded = jwt.decode(token, { complete: true });
